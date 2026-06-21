@@ -797,7 +797,13 @@ async function startServer() {
     ];
 
     const proc = spawn("ffmpeg", args, { stdio: ["ignore", "pipe", "pipe"] });
-    proc.on("error", (err) => console.error(`[FFmpeg] spawn error for ${sessionId}:`, err.message));
+    let spawnFailed = false;
+    proc.on("error", (err) => {
+      spawnFailed = true;
+      console.error(`[FFmpeg] spawn error for ${sessionId}: ${err.message}. Is ffmpeg installed on this host?`);
+      const s = hlsSessions.get(sessionId);
+      if (s) { clearInterval(s.cleanupTimer); hlsSessions.delete(sessionId); }
+    });
     proc.stderr?.on("data", (d) => {
       const line: string = d.toString();
       if (line.includes("Error") || line.includes("error")) {
