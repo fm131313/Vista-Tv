@@ -1,0 +1,29 @@
+# Native Android / Capacitor project - not needed for the Node server build
+android/
+
+# Large local assets / scratch files not needed at build/runtime
+attached_assets/
+assets/.aistudio/
+
+# Runtime data/cache - should be generated at runtime, not baked into the image
+data/
+
+# Standard excludes
+node_modules/
+dist/
+build/
+coverage/
+.git/
+.github/
+
+# Env, logs, OS junk
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+
+# Docs not needed in the image
+README.md
+BUILD_ANDROID.md
+.replit
